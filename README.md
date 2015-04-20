@@ -4,8 +4,6 @@ GHOST
 Minor Prog - Native App Studio
 ------------------------------
 
- 
-
 Ghost is a simple two player word game, where players take turns adding letter
 to create a word.
 
@@ -24,6 +22,8 @@ to create a word.
 
  
 
+ 
+
 ### Frameworks
 
 -   Set alphabetical user names for players
@@ -36,17 +36,42 @@ to create a word.
 
  
 
-### Sketches API’s
+ 
+
+### Mockup Sketches
+
+ 
+
+Loading Screen
 
 ![](<ghost DS1.png>)
 
+ 
+
+Player 1 User Name
+
 ![](<ghost DS2.png>)
+
+ 
+
+Player 2 user name
 
 ![](<ghost DS3.png>)
 
+ 
+
+The game
+
 ![](<ghost DS4.png>)
+
+ 
+
+Winning
 
 ![](<ghost DS5.png>)
 
-![](<ghost DS6.png>)
+ 
 
+Topscores & Menu
+
+![](<ghost DS6.png>)
