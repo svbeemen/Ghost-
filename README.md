@@ -11,21 +11,42 @@ to create a word.
 
  
 
-**Features**
+### Features
 
--   The player can pick a user name that is visible to the opponent.
+-   The player can pick a user name.
 
--   The player can see when the opponent has viewed the new play.
+-   Game can be played in English and Dutch.
 
--   Players will receive a notification when the opponent has added a new
-    letter.
+-   A menu button will be available in all stages of the game app.
 
--   The default language can be chosen when installing the app.
+-   In the menu the user can chose a language, reset the game and view the
+    topscores.
 
--   A settings button will be available in all stages of the game app.
+ 
 
--   In the settings the user can chose a language, edit the user name and turn
-    of any notifications.
+### Frameworks
 
--   A history button where the user can view his or her’s scores from previous
-    games.
+-   Set alphabetical user names for players
+
+-   Keep track of wins for players
+
+-   Check state of game
+
+-   Save state of game
+
+ 
+
+### Sketches API’s
+
+![](<ghost DS1.png>)
+
+![](<ghost DS2.png>)
+
+![](<ghost DS3.png>)
+
+![](<ghost DS4.png>)
+
+![](<ghost DS5.png>)
+
+![](<ghost DS6.png>)
+
