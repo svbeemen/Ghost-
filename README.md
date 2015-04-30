@@ -9,17 +9,18 @@ to create a word.
 
  
 
-### Features
+**Features**
 
--   The player can pick a user name.
+-   The player can pick a user name that is visible to the opponent.
 
--   Game can be played in English and Dutch.
+-   The player can see when the opponent has viewed the new play.
 
--   A menu button will be available in all stages of the game app.
+-   Players will receive a notification when the opponent has added a new
+    letter.
 
--   In the menu the user can chose a language, reset the game and view the
-    topscores.
+-   The default language can be chosen when installing the app.
 
+<<<<<<< HEAD
  
 
  
@@ -75,3 +76,12 @@ Winning
 Topscores & Menu
 
 ![](<ghost DS6.png>)
+=======
+-   A settings button will be available in all stages of the game app.
+
+-   In the settings the user can chose a language, edit the user name and turn
+    of any notifications.
+
+-   A history button where the user can view his or her’s scores from previous
+    games.
+>>>>>>> parent of 087e58e... Update README.md
