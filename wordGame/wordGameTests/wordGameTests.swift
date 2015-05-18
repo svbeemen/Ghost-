@@ -1,15 +1,15 @@
 //
-//  GhostTests.swift
-//  GhostTests
+//  wordGameTests.swift
+//  wordGameTests
 //
-//  Created by Sangeeta van Beemen on 29/04/15 W18.
+//  Created by Sangeeta van Beemen on 15/05/15 W20.
 //  Copyright (c) 2015 Sangeeta van Beemen. All rights reserved.
 //
 
 import UIKit
 import XCTest
 
-class GhostTests: XCTestCase {
+class wordGameTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
