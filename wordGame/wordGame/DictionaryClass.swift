@@ -12,6 +12,7 @@ class Dictionary
 {
     // list containing strings that is the content of the word dictionary
     var filterDictionary: [String]
+    
     // is a constant because it never changes
     let fullDictionary: [String]
     
@@ -21,11 +22,13 @@ class Dictionary
         self.filterDictionary = self.fullDictionary
     }
     
+    
     // function that checks letters played and filters the filterDictioanry accordingly
     func filter(lettersToCheck: String)
     {
-        self.filterDictionary = self.fullDictionary.filter { $0.hasPrefix(lettersToCheck) }
-        defaults.setValue(self.filterDictionary, forKey: "currentFilterDictionary")
+        self.filterDictionary = self.filterDictionary.filter { $0.hasPrefix(lettersToCheck) }
+        println("filterDictionary")
+        println(self.filterDictionary)
     }
     
     // function to count amount words in filterDictionary
