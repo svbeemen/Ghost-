@@ -22,6 +22,8 @@
 		87E287D11B067F4300BB83FD /* wordGameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E287D01B067F4300BB83FD /* wordGameTests.swift */; };
 		87E2D55F1B093BEB00A61366 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E2D55E1B093BEB00A61366 /* SettingsViewController.swift */; };
 		87E2D5611B09471500A61366 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E2D5601B09471500A61366 /* PlayerViewController.swift */; };
+		87EDBA881B107D22004B5A7B /* wordGame.app in Resources */ = {isa = PBXBuildFile; fileRef = 87E287B51B067F4000BB83FD /* wordGame.app */; };
+		87EDBA891B107D23004B5A7B /* wordGame.app in Resources */ = {isa = PBXBuildFile; fileRef = 87E287B51B067F4000BB83FD /* wordGame.app */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -221,7 +223,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 87E287B01B067F3F00BB83FD /* Build configuration list for PBXProject "wordGame" */;
+			buildConfigurationList = 87E287B01B067F3F00BB83FD /* Build configuration list for PBXProject "Ghost" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -246,6 +248,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				87E287C01B067F4100BB83FD /* Main.storyboard in Resources */,
+				87EDBA881B107D22004B5A7B /* wordGame.app in Resources */,
 				874D264E1B10757A0064360D /* english.txt in Resources */,
 				874D264C1B1058E60064360D /* dutch.txt in Resources */,
 				87E287C51B067F4100BB83FD /* LaunchScreen.xib in Resources */,
@@ -257,6 +260,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				87EDBA891B107D23004B5A7B /* wordGame.app in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -459,7 +463,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		87E287B01B067F3F00BB83FD /* Build configuration list for PBXProject "wordGame" */ = {
+		87E287B01B067F3F00BB83FD /* Build configuration list for PBXProject "Ghost" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				87E287D21B067F4400BB83FD /* Debug */,

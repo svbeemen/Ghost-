@@ -1,9 +1,11 @@
 //
 //  DictionaryClass.swift
-//  wordGame
+//  Ghost
 //
-//  Created by Sangeeta van Beemen on 16/05/15 W20.
 //  Copyright (c) 2015 Sangeeta van Beemen. All rights reserved.
+//
+//  naam: Sangeeta van Beemen
+//  studentnummer: 10340521
 //
 
 import Foundation
@@ -27,8 +29,6 @@ class Dictionary
     func filter(lettersToCheck: String)
     {
         self.filterDictionary = self.filterDictionary.filter { $0.hasPrefix(lettersToCheck) }
-        println("filterDictionary")
-        println(self.filterDictionary)
     }
     
     // function to count amount words in filterDictionary

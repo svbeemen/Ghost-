@@ -1,14 +1,21 @@
 //
 //  PlayerViewController.swift
-//  wordGame
+//  Ghost
 //
-//  Created by Sangeeta van Beemen on 18/05/15 W21.
 //  Copyright (c) 2015 Sangeeta van Beemen. All rights reserved.
+//
+//  naam: Sangeeta van Beemen
+//  studentnummer: 10340521
 //
 
 import UIKit
 
+// variable to access NSUserDeafults
 var defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
+
+// to handle input playersNames and display previous player names
+var managePlayerInfo: PlayerInfoManagement = PlayerInfoManagement()
+
 
 class PlayerViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate
 {
@@ -33,33 +40,19 @@ class PlayerViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     @IBOutlet weak var startGameButton: UIButton!
     
     // contents of name pickers
-    var playerNamesPickerOne: [String]
-    var playerNamesPickerTwo: [String]
+    let savedPlayerNames: [String]
+
 
     required init(coder aDecoder: NSCoder)
     {
+        // retrieve playerNames from defaults through managementPlayerInfo class
+        self.savedPlayerNames = managePlayerInfo.playerNames
 
-        // retrieve playerNames from defaults
-        println(defaults.objectForKey("playerNames"))
-        
-        if let playerNamesPickerOne = defaults.objectForKey("playerNames") as? [String]
-        {
-            self.playerNamesPickerOne = playerNamesPickerOne
-            let playerNamesPickerTwo = defaults.objectForKey("playerNames") as? [String]
-            self.playerNamesPickerTwo = playerNamesPickerTwo!
-        }
-        // if no previous players picker empty
-        else
-        {
-            self.playerNamesPickerOne = [String]()
-            self.playerNamesPickerTwo = [String]()
-        }
-        
         super.init(coder: aDecoder)
-        
     }
     
-    // assign delegates and data for textfields and pickers
+    
+    // assign delegates and datasource for textfields and pickers
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -80,49 +73,67 @@ class PlayerViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         self.playerTwoTextFieldInput.delegate = self
     }
     
+    // disable start button till players enter names
+    override func viewWillAppear(animated: Bool)
+    {
+        startGameButton.enabled = false
+    }
+    
+    
+    // show and hide namePicker player1 when pressed
+    @IBAction func showNamePickerOneButton(sender: AnyObject)
+    {
+        self.playerOneNamePicker.hidden = !self.playerOneNamePicker.hidden
+    }
+
+    
+    // show and hide namePicker player2 when pressed
+    @IBAction func showNamePickerTwoButton(sender: UIButton)
+    {
+        self.playerTwoNamePicker.hidden = !self.playerTwoNamePicker.hidden
+    }
+    
+    
+    // startGame go to gameView
+    @IBAction func pressStartGameButton(sender: UIButton)
+    {
+        // save names of current players in defaults
+        defaults.setObject(playerOneTextFieldInput.text!, forKey: "currentPlayerOne")
+        defaults.setObject(playerTwoTextFieldInput.text!, forKey: "currentPlayerTwo")
+        
+        // instance of to manage current players info
+        managePlayerInfo.addPlayer(playerOneTextFieldInput.text!)
+        managePlayerInfo.addPlayer(playerTwoTextFieldInput.text!)
+    }
+    
     
     // hide keyboard when done is pressed
     func textFieldShouldReturn(textField: UITextField) -> Bool
     {
+        // checks if both players entered a name
+        checkForInputPlayerName()
+        
         self.view.endEditing(true)
         return true
     }
     
     
-    // show or hide namePicker player1 when pressed
-    @IBAction func showNamePickerOneButton(sender: AnyObject)
-    {
-        self.playerOneNamePicker.hidden = !self.playerOneNamePicker.hidden
-
-        println(self.playerOneNamePicker.hidden)
-    }
-
-    
-    // show or hide namePicker player2 when pressed
-    @IBAction func showNamePickerTwoButton(sender: UIButton)
-    {
-        self.playerTwoNamePicker.hidden = !self.playerTwoNamePicker.hidden
-        
-        println(self.playerTwoNamePicker.hidden)
-    }
-    
-
-    // to display excisting playerNames in namePickers
+    // pickerView protocols to show playerNames
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int
     {
         return 1
     }
-
+    
     
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int
     {
-        return playerNamesPickerOne.count + playerNamesPickerTwo.count
+        return savedPlayerNames.count
     }
     
-
+    
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String!
     {
-        return playerNamesPickerOne[row] + playerNamesPickerTwo[row]
+        return savedPlayerNames[row]
     }
     
     
@@ -131,46 +142,37 @@ class PlayerViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     {
         if pickerView == playerOneNamePicker
         {
-            playerOneTextFieldInput.text = playerNamesPickerOne[row]
+            playerOneTextFieldInput.text = savedPlayerNames[row]
         }
         else if pickerView == playerTwoNamePicker
         {
-            playerTwoTextFieldInput.text = playerNamesPickerTwo[row]
+            playerTwoTextFieldInput.text = savedPlayerNames[row]
+        }
+        
+        // checks if both players entered a name
+        checkForInputPlayerName()
+    }
+    
+    
+    // enables startButton when both players have entered a name
+    func checkForInputPlayerName()
+    {
+        if !playerTwoTextFieldInput.text.isEmpty && !playerOneTextFieldInput.text.isEmpty
+        {
+            startGameButton.enabled = true
+        }
+        
+        if playerTwoTextFieldInput.text.isEmpty || playerOneTextFieldInput.text.isEmpty
+        {
+            startGameButton.enabled = false
         }
     }
     
     
-    // start game button
-    @IBAction func startGameButton(sender: UIButton)
+    // checks if both players enterd a name  
+    func textFieldDidEndEditing(textField: UITextField)
     {
-        // save names of current players in defaults
-        defaults.setObject(playerOneTextFieldInput.text!, forKey: "currentPlayerOne")
-        defaults.setObject(playerTwoTextFieldInput.text!, forKey: "currentPlayerTwo")
-        
-        // instance of to manage current players info
-        var playerInfoManagement: PlayerInfoManagement = PlayerInfoManagement()
-        
-        // set info of current players
-        playerInfoManagement.setScoreNewPlayer(playerOneTextFieldInput.text!)
-        playerInfoManagement.setScoreNewPlayer(playerTwoTextFieldInput.text!)
-        playerInfoManagement.saveHighscoresList()
-        
-        // save current playerNames in playerNamesList in defaults
-        playerInfoManagement.playerNames.append(playerOneTextFieldInput.text!)
-        playerInfoManagement.playerNames.append(playerTwoTextFieldInput.text!)
-        defaults.setObject(playerInfoManagement.playerNames, forKey: "playerNames")
-        
-        // instantiate a gameScene when startGameButton is pressed
-        let gameScene = self.storyboard?.instantiateViewControllerWithIdentifier("gameScene") as! GameViewController
-        self.navigationController?.pushViewController(gameScene, animated: true)
-    }
-    
-    //settings button
-    @IBAction func settingsButton(sender: UIButton)
-    {
-        let settingsView = self.storyboard?.instantiateViewControllerWithIdentifier("settingsView") as! SettingsViewController
-        
-        self.navigationController?.pushViewController(settingsView, animated: true)
+        checkForInputPlayerName()
     }
 }
 

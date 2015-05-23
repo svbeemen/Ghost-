@@ -1,54 +1,60 @@
 //
-//  ViewControllerSettings.swift
-//  wordGame
+//  SettingsViewController.swift
+//  Ghost
 //
-//  Created by Sangeeta van Beemen on 17/05/15 W20.
 //  Copyright (c) 2015 Sangeeta van Beemen. All rights reserved.
+//
+//  naam: Sangeeta van Beemen 
+//  studentnummer: 10340521
 //
 
 import UIKit
 
-//var defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
-
 class SettingsViewController: UIViewController
 {
-    // language setting segmnet control. save language seting in NSUerDefaults Class
+    // language setting segmnet control
     @IBOutlet weak var languageSettingSegmentControl: UISegmentedControl!
     
-    // resume game that was in progress button
+    // resume gameButton
     @IBOutlet weak var resumeGameButton: UIButton!
     
-    // bool to indicate to show and reload game that was being played
-    var gameInProgress: Bool!
+    // bool to indicate if there was a game in session
+    let gameInProgress: Bool
 
-    
-    override func viewDidLoad()
+    // retrieve value of bool gameInProgress from defaults
+    required init(coder aDecoder: NSCoder)
     {
-        super.viewDidLoad()
-        
-        var defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        
-//        // determines wether to show and enable resume game button 
-//        self.gameInProgress = defaults.boolForKey("gameInProgress")
-//        
-//        if (self.gameInProgress != nil)
-//        {
-//            resumeGameButton.hidden = false
-//            resumeGameButton.enabled = true
-//        }
+        if let gameInProgress = defaults.objectForKey("gameInProgress") as? Bool
+        {
+            self.gameInProgress = gameInProgress
+        }
+        else
+        {
+            self.gameInProgress = false
+        }
+        super.init(coder: aDecoder)
     }
     
-    // back to menu button from settings view when changed nothing
-    @IBAction func backToGameButton(sender: UIButton)
+    
+    // if game was in progress enable and show resumeGameButton
+    override func viewWillAppear(animated: Bool)
     {
-        // self.navigationController?.popToViewController(gameScene, animated: true)
+        if self.gameInProgress
+        {
+            resumeGameButton.enabled = true
+            resumeGameButton.hidden = false
+        }
+        else 
+        {
+            resumeGameButton.enabled = false
+            resumeGameButton.hidden = true
+        }
     }
-
-
+    
+    
+    // save language selected in defaults
     @IBAction func changeLanguageSegmentControl(sender: UISegmentedControl)
     {
-        let savedLanguage = languageSettingSegmentControl.selectedSegmentIndex
-        
         switch (languageSettingSegmentControl.selectedSegmentIndex)
         {
         case 0:
@@ -58,40 +64,43 @@ class SettingsViewController: UIViewController
         default:
             defaults.setValue("english", forKey: "language")
         }
+        
+        // when language changed resume button is hidden and disabled
+        resumeGameButton.enabled = false
+        resumeGameButton.hidden = true
+        
+        defaults.synchronize()
     }
     
-    // new game button. reset dictionary and game when pressed
-    // go back to initial enter info player view
+    
+    // go to Highscores view
+    @IBAction func viewHighScores(sender: UIButton)
+    {
+    }
+    
+    
+    // save language set in defaults
+    func saveLanguage()
+    {
+        if languageSettingSegmentControl.selectedSegmentIndex == 0
+        {
+            defaults.setValue("english", forKey: "language")
+        }
+        else
+        {
+            defaults.setValue("dutch", forKey: "language")
+        }
+    }
+    
+    
+    // start new game
     @IBAction func newGameButton(sender: UIButton)
     {
-        
+        // set language in defaults for dictionary 
+        saveLanguage()  
+        // resets game to initial state if game was lefted before gameover
+        let gameInProgress = false
+        defaults.setObject(gameInProgress, forKey: "gameInProgress")
+        defaults.synchronize()
     }
-    
-    // topscore button. go to view with table view of topscores saved in NSuserDefaults.
-    @IBAction func topScoreButton(sender: UIButton)
-    {
-        let highscoreScene = self.storyboard?.instantiateViewControllerWithIdentifier("highscoreScene") as! HighScoresViewViewController
-        self.navigationController?.pushViewController(highscoreScene, animated: true)
-
-    }
-
-    
-
-//
-//    override func didReceiveMemoryWarning() {
-//        super.didReceiveMemoryWarning()
-//        // Dispose of any resources that can be recreated.
-//    }
-//    
-//
-//    /*
-//    // MARK: - Navigation
-//
-//    // In a storyboard-based application, you will often want to do a little preparation before navigation
-//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        // Get the new view controller using segue.destinationViewController.
-//        // Pass the selected object to the new view controller.
-//    }
-//    */
-
 }

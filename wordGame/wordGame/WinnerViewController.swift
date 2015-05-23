@@ -1,42 +1,39 @@
 //
 //  WinnerViewController.swift
-//  wordGame
+//  Ghost
 //
-//  Created by Sangeeta van Beemen on 22/05/15 W21.
 //  Copyright (c) 2015 Sangeeta van Beemen. All rights reserved.
+//
+//  naam: Sangeeta van Beemen
+//  studentnummer: 10340521
 //
 
 import UIKit
 
 class WinnerViewController: UIViewController {
-
-    @IBOutlet weak var winnerMessageLabel: UILabel!
     
-    override func viewDidLoad()
+    // label for winner message
+    @IBOutlet weak var winnerLabel: UILabel!
+    
+    // button to go to menu
+    @IBAction func goToMenu(sender: UIButton)
     {
-        super.viewDidLoad()
-//        self.winnerMessageLabel.text! = 
-//    
-        
-//        winnerMessageLabel.text = 
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    // winner of game
+    let winner: String
+    
+    // retrieve name of winner from defaults
+    required init(coder aDecoder: NSCoder)
+    {
+        self.winner = defaults.valueForKey("winner") as! String
+        
+        super.init(coder: aDecoder)
     }
-    */
-
+    
+    // show name of winner and message
+    override func viewWillAppear(animated: Bool)
+    {
+        winnerLabel.text = "Congratualations \(self.winner)!"
+    }
 }

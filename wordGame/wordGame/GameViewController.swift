@@ -1,22 +1,24 @@
 //
 //  GameViewController.swift
-//  wordGame
+//  Ghost
 //
-//  Created by Sangeeta van Beemen on 15/05/15 W20.
 //  Copyright (c) 2015 Sangeeta van Beemen. All rights reserved.
+//
+//  naam: Sangeeta van Beemen
+//  studentnummer: 10340521
 //
 
 import UIKit
-
-// variables and constants to load dictionary and game instances
-let path = NSBundle.mainBundle().pathForResource("english", ofType: "txt")
-var text = String(contentsOfFile: path!, encoding: NSUTF8StringEncoding, error: nil)!
-let currentDictionary = Dictionary(wordList: text)
-let currentGame = Game(gameDictionary: currentDictionary)
+//
+//// variables and constants to load dictionary and game instances
+//let language = defaults.valueForKey("language") as! String
+//let path = NSBundle.mainBundle().pathForResource(language, ofType: "txt")
+//let text = String(contentsOfFile: path!, encoding: NSUTF8StringEncoding, error: nil)!
+//let currentDictionary = Dictionary(wordList: text)
+//let currentGame = Game(gameDictionary: currentDictionary)
 
 class GameViewController: UIViewController
 {
-    
     // UILabel player1
     @IBOutlet weak var playerOneLabel: UILabel!
     
@@ -38,11 +40,21 @@ class GameViewController: UIViewController
     // title of letterButton
     var letter: String!
     
+    // bool to indicate if a game is/was being played
     var gameInProgress: Bool
     
+    // variables and constants to load dictionary and game instances
+    let language: String
+    let path: String
+    let text: String
+    let currentDictionary: Dictionary
+    let currentGame: Game
     
+    
+    // check defaults if game was in progress
     required init(coder aDecoder: NSCoder)
     {
+        // retrieve value of bool from defaults
         if var gameInProgress = defaults.objectForKey("gameInProgress") as? Bool
         {
             self.gameInProgress = gameInProgress
@@ -52,87 +64,99 @@ class GameViewController: UIViewController
             self.gameInProgress = false
         }
         
+        
+        // variables and constants to load dictionary and game instances
+        self.language = defaults.valueForKey("language") as! String
+        self.path = NSBundle.mainBundle().pathForResource(language, ofType: "txt")!
+        self.text = String(contentsOfFile: path, encoding: NSUTF8StringEncoding, error: nil)!
+        self.currentDictionary = Dictionary(wordList: text)
+        self.currentGame = Game(gameDictionary: currentDictionary)
+        
         super.init(coder: aDecoder)
     }
     
-
+    
+    // load view of game in appropriate state
     override func viewWillAppear(animated: Bool)
     {
         super.viewWillAppear(animated)
-
-        println("game in progress")
-        println(self.gameInProgress)
         
-        // restores game to state it was left in
+        // if game was in progress restores that state
         if self.gameInProgress
         {
+            // who's turn, lettersplayed and filterd gameDictionary
             lettersPlayedDisplay.text = defaults.objectForKey("currentLettersPlayed") as? String
             currentGame.playerOneTurn = defaults.objectForKey("currentPlayerOneTurn") as! Bool
             currentGame.gameDictionary.filterDictionary = defaults.objectForKey("currentFilterDictionary") as! [String]
-            println("view should show text")
-            println(currentGame.playerOneTurn)
         }
-        
+        else
+        {
+            // reset to a new game
+            currentGame.playerOneTurn = true
+            currentGame.gameDictionary.reset()
+            lettersPlayedDisplay.text = ""
+            currentGame.gameOver = false
+        }
+
+        // names of curreny players. only change when new game started
         self.playerOneLabel.text = defaults.objectForKey("currentPlayerOne") as? String
         self.playerTwoLabel.text = defaults.objectForKey("currentPlayerTwo") as? String
         
-        // highlight the correct players label
-        self.playerOneLabel.highlighted = currentGame.playerOneTurn
-        self.playerTwoLabel.highlighted = !currentGame.playerOneTurn
+        // highlight players who turn it is
+        switchPlayerLabelHighlight()
+        
+        // disable play and delete buttons until letter has been played
+        deleteButton.enabled = false
+        deleteButton.highlighted = true
+        playButton.enabled = false
+        playButton.highlighted = true
     }
     
     
+    // saves game state as view if game hasnt ended
+    // saves gameInProgress bool in defaults
     override func viewWillDisappear(animated: Bool)
     {
-        println("inside view will dissapear")
-        
-        self.gameInProgress = true
-        
-        println(self.gameInProgress)
-        
-        defaults.setObject(gameInProgress, forKey: "gameInProgress")
-        
-        println("set object defaults")
-        
         saveGameState()
-    }
+
+        defaults.setObject(gameInProgress, forKey: "gameInProgress")
+        defaults.synchronize()
+    }    
     
+    
+    // leave gameView, go to menu
+    @IBAction func goToMenu(sender: UIButton)
+    {
+        defaults.setObject(gameInProgress, forKey: "gameInProgress")
+        defaults.synchronize()
+    }
+
     @IBAction func pressPlayButton(sender: UIButton)
     {
-        // send content display to game class to filter dictionary
-        currentGame.guess(lettersPlayedDisplay.text!)
+        // register that a game is being played
+        self.gameInProgress = true
         
         // disable delete and play buttons
         deleteButton.enabled = false
+        deleteButton.highlighted = true
         playButton.enabled = false
         playButton.highlighted = true
 
-        // check if gameOver
+        // send content display to game class to filter dictionary
+        currentGame.guess(lettersPlayedDisplay.text!)
+
+        // check if gameOver check who won
         if currentGame.ended()
         {
-            // checks who won
-            currentGame.winner()
-            if currentGame.playerOneWinner
-            {
-                println("player one wins!")
-            }
-            else
-            {
-                println("player two wins!")
-            }
-            
             self.gameInProgress = false
-            currentGame.gameOver = false
-            // resets game filtered dictionary to original content
-            currentGame.gameDictionary.reset()
-            self.lettersPlayedDisplay.text = ""
             
-//            displayWinner()
+            // check who won and save win
+            playerWins()
         }
         
         // switch playerLabels to indicate who's turn
-        switchPlayerLabelHighlight()
         currentGame.turn()
+        switchPlayerLabelHighlight()
         
         // enables letter buttons so new letter can be played
         for button in alphaButtons
@@ -142,109 +166,105 @@ class GameViewController: UIViewController
         }
     }
     
-    // deletes input in textfield when deleteButton is pressed
+    
+    // checks who won and saves the win in PlayerInfoManagement
+    func playerWins()
+    {
+        currentGame.winner()
+        if currentGame.playerOneWinner
+        {
+            managePlayerInfo.playerWins(playerOneLabel.text!)
+            defaults.setValue(playerOneLabel.text, forKey: "winner")
+        }
+        else
+        {
+            managePlayerInfo.playerWins(playerTwoLabel.text!)
+            defaults.setValue(playerTwoLabel.text, forKey: "winner")
+        }
+        
+        // reset gameOver 
+        currentGame.gameOver = false
+        
+        // goes to new view displaying the winner
+        let winnerScene = self.storyboard?.instantiateViewControllerWithIdentifier("winnerScene") as! WinnerViewController
+        self.navigationController?.pushViewController(winnerScene, animated: true)
+        self.performSegueWithIdentifier("showWinner", sender: nil)
+    }
+    
+    
+    // delete button is pressed
     @IBAction func backSpaceButton(sender: UIButton)
     {
-        // disables delete button once pressed
+        // disable delete button
         deleteButton.enabled = false
-        deleteButton.highlighted = false
+        deleteButton.highlighted = true
         
-        // allows only one letter to be removed
+        // deletes input in textfield when deleteButton is pressed
         let stringLength = count(lettersPlayedDisplay.text!)
         let substringIndex = stringLength - 1
         lettersPlayedDisplay.text = lettersPlayedDisplay.text!.substringToIndex(advance(lettersPlayedDisplay.text!.startIndex, substringIndex))
         
-        // enables alpha buttons after deteled one letter
+        // enables letter buttons when deletes 1 letter
         for button in alphaButtons
         {
             button.enabled = true
             button.highlighted = false
         }
-        
     }
     
     
+    // a letter button is pressed
     @IBAction func playedLetter(sender: UIButton)
     {
-        // display player letter input in display
+        // adds letter pressed to disply
         letter = sender.currentTitle!
         lettersPlayedDisplay.text = lettersPlayedDisplay.text! + letter
         
-        // disable letterButtons when one letter has been pressed
-        checkInput()
-    }
-    
-    
-    // settings button => to settingsview/menu
-    @IBAction func settingsButton(sender: UIButton)
-    {
+        // disables letter buttons when 1 letter pressed
+        for button in alphaButtons
+        {
+            button.enabled = false
+            button.highlighted = true
+            
+        }
         
+        // enable delete & play button
+        deleteButton.enabled = true
+        deleteButton.highlighted = false
+        playButton.enabled = true
+        playButton.highlighted = false
     }
     
     
-    // highlight player of current player
+    // highlight player who's turn it is
     func switchPlayerLabelHighlight()
     {
-        playerOneLabel.highlighted = !playerOneLabel.highlighted
-        playerTwoLabel.highlighted = !playerTwoLabel.highlighted
-    }
-    
-
-    // enables and disables buttons for valid input
-    func checkInput()
-    {
-        // enables playButton when 1 letter has been entered
-        if count(letter) == 1
+        if currentGame.playerOneTurn
         {
-            for button in alphaButtons
-            {
-                button.enabled = false
-                button.highlighted = true
-                
-            }
-            playButton.enabled = true
-            playButton.highlighted = false
-            
-            deleteButton.enabled = true
-            deleteButton.highlighted = false
+            playerOneLabel.highlighted = true
+            playerTwoLabel.highlighted = false
+        }
+        else if !currentGame.playerOneTurn
+        {
+            playerOneLabel.highlighted = false
+            playerTwoLabel.highlighted = true
         }
     }
     
     
-    // save data of current game
+    // save data of current game in defaults 
     func saveGameState()
     {
+        // playerOneTurn
         defaults.setObject(currentGame.playerOneTurn, forKey: "currentPlayerOneTurn")
+        
+        // filtered gamedictionary
         defaults.setObject(currentDictionary.filterDictionary, forKey: "currentFilterDictionary")
+        
+        // letters played
         defaults.setObject(lettersPlayedDisplay.text, forKey: "currentLettersPlayed")
         
-        println("inside save stat")
-        println(defaults.objectForKey("currentPlayerOneTurn"))
-        println(defaults.objectForKey("currentFilterDictionary"))
-        println(defaults.objectForKey("currentLettersPlayed"))
-
+        defaults.synchronize()
     }
-    
-//    func displayWinner()
-//    {
-//        var nameWinner: String
-//        println("inside displayWinner")
-//        
-//        if currentGame.playerOneWinner
-//        {
-//            nameWinner = self.playerOneLabel.text!
-//            println(self.playerOneLabel.text!)
-//            
-//        }
-//        else
-//        {
-//            nameWinner = playerTwoLabel.text!
-//             println(self.playerTwoLabel.text!)
-//        }
-//        // instantiate a gameScene when startGameButton is pressed
-//        let winnerView = self.storyboard?.instantiateViewControllerWithIdentifier("winnerScene") as! WinnerViewController
-//        winnerView.winnerMessageLabel.text! = nameWinner
-//        self.navigationController?.pushViewController(winnerView, animated: true)
-//    }
 }
 

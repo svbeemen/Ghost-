@@ -1,19 +1,28 @@
 //
 //  PlayerInfoManagement.swift
-//  wordGame
+//  Ghost
 //
-//  Created by Sangeeta van Beemen on 22/05/15 W21.
 //  Copyright (c) 2015 Sangeeta van Beemen. All rights reserved.
+//
+//  naam: Sangeeta van Beemen
+//  studentnummer: 10340521
 //
 
 import Foundation
 
 class PlayerInfoManagement
 {
-    
+    // NSUserDefaults singelton
     var defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
+    
+    // list of player names for namepickers
     var playerNames = [String]()
+    
+    // list of playerNames and scores
     var highscores: [String: Int]
+    
+    // list of playerNames and scores for highscore view
+    var highScoreViewList = [String]()
     
     init()
     {
@@ -26,10 +35,31 @@ class PlayerInfoManagement
         {
             self.highscores = [String:Int]()
         }
+        
+        // retrieve players list form defaults
+        if let playerNames = defaults.objectForKey("playerNames") as? [String]
+        {
+            self.playerNames = playerNames
+        }
+        else
+        {
+            self.playerNames = [String]()
+        }
+        
+        // sort highscores and assign content to list for highscoreView
+        sortHighscoresList()
+    }
+    
+    // sort highscores and assign content to list for highscoreView
+    func sortHighscoresList()
+    {
+        highScoreViewList = sorted(highscores.keys, {player1, player2 in self.highscores[player1] > self.highscores[player2]})
+        savePlayersInfo()
     }
     
     
-    func setScoreNewPlayer(playerName: String)
+    // adds player if newplayer to highscores & playerNames
+    func addPlayer(playerName: String)
     {
         // check if player is already in highscore list
         if highscores[playerName] != nil
@@ -39,30 +69,32 @@ class PlayerInfoManagement
         else
         {
             highscores[playerName] = 0
+            playerNames.append(playerName)
         }
+
+        savePlayersInfo()
     }
     
     
+    // increments wins of input player by 1
     func playerWins(playerName: String)
     {
         highscores[playerName]? += 1
         sortHighscoresList()
-        saveHighscoresList()
+        savePlayersInfo()
     }
     
     
-    func sortHighscoresList()
+    // saves all players info in defaults
+    func savePlayersInfo()
     {
-        playerNames = sorted(highscores.keys, {player1, player2 in self.highscores[player1] > self.highscores[player2]})
-
-    }
-    
-    
-    func saveHighscoresList()
-    {
+        defaults.setObject(playerNames, forKey: "playerNames")
         defaults.setObject(highscores, forKey: "highscores")
         defaults.synchronize()
     }
 
-    
 }
+
+
+
+    

@@ -7,7 +7,7 @@
         <!--Player View Controller-->
         <scene sceneID="dNT-IQ-57x">
             <objects>
-                <viewController storyboardIdentifier="playerView" id="ody-xS-kz0" customClass="PlayerViewController" customModule="wordGame" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="playerScene" id="ody-xS-kz0" customClass="PlayerViewController" customModule="wordGame" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jhj-fK-Szl"/>
                         <viewControllerLayoutGuide type="bottom" id="5pr-xB-mcT"/>
@@ -34,7 +34,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="startGameButton:" destination="ody-xS-kz0" eventType="touchUpInside" id="RdL-Bz-4C5"/>
+                                    <action selector="pressStartGameButton:" destination="ody-xS-kz0" eventType="touchUpInside" id="ze7-Mf-VuS"/>
                                     <segue destination="BYZ-38-t0r" kind="show" id="U1J-kK-NQR"/>
                                 </connections>
                             </button>
@@ -92,6 +92,7 @@
                         <outlet property="playerOneTextFieldInput" destination="Cw7-sS-0YP" id="WSc-PX-LBb"/>
                         <outlet property="playerTwoNamePicker" destination="peN-qE-9kE" id="2Jd-Zt-a5K"/>
                         <outlet property="playerTwoTextFieldInput" destination="0I4-Y4-B53" id="hrz-9E-vKJ"/>
+                        <outlet property="startGameButton" destination="IbF-OD-m3X" id="GAs-BE-gsv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jer-6g-cbg" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -354,17 +355,6 @@
                                     <action selector="playedLetter:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gPl-2E-SlX"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="72s-dg-Tju">
-                                <rect key="frame" x="162" y="481" width="50" height="50"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <state key="normal" title="r">
-                                    <color key="titleColor" red="0.0055634469696970168" green="0.0055634469696970168" blue="0.0055634469696970168" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="playedLetter:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0Xz-uf-p0X"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qcq-VY-Lr0">
                                 <rect key="frame" x="104" y="597" width="108" height="50"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
@@ -427,12 +417,14 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="highlightedColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V7l-v7-KsZ">
-                                <rect key="frame" x="315" y="20" width="44" height="42"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="25"/>
-                                <state key="normal" title="⦾"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V7l-v7-KsZ">
+                                <rect key="frame" x="319" y="28" width="40" height="46"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                <state key="normal" title="➡︎">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
                                 <connections>
-                                    <action selector="settingsButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CPl-XD-PFI"/>
+                                    <action selector="goToMenu:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XAk-rv-t7x"/>
                                     <segue destination="XaB-X6-LB3" kind="show" id="CQY-rR-i0f"/>
                                 </connections>
                             </button>
@@ -447,10 +439,20 @@
                                     <action selector="playedLetter:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Sd5-5r-F3y"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="72s-dg-Tju">
+                                <rect key="frame" x="162" y="481" width="50" height="50"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="r">
+                                    <color key="titleColor" red="0.0055634469696970168" green="0.0055634469696970168" blue="0.0055634469696970168" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="playedLetter:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0Xz-uf-p0X"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.80545691287878785" green="0.80545691287878785" blue="0.80545691287878785" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                     </view>
-                    <navigationItem key="navigationItem" id="owb-Qz-G9G"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
@@ -485,42 +487,55 @@
                         <outletCollection property="alphaButtons" destination="SIp-oE-Y4w" collectionClass="NSMutableArray" id="gup-aO-CoL"/>
                         <outletCollection property="alphaButtons" destination="VLq-wi-3dc" collectionClass="NSMutableArray" id="XNF-6q-ueH"/>
                         <outletCollection property="alphaButtons" destination="NAB-rT-AUs" collectionClass="NSMutableArray" id="ZZa-6d-Xm7"/>
+                        <segue destination="XSt-I6-pjY" kind="show" identifier="showWinner" id="HmI-rs-ED7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="97.5" y="362.5"/>
+            <point key="canvasLocation" x="109.5" y="362.5"/>
         </scene>
         <!--Winner View Controller-->
-        <scene sceneID="AH1-NY-KSd">
+        <scene sceneID="rIJ-WA-dQX">
             <objects>
-                <viewController storyboardIdentifier="winnerScene" id="A7n-XG-dMU" customClass="WinnerViewController" customModule="wordGame" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="winnerScene" id="XSt-I6-pjY" customClass="WinnerViewController" customModule="wordGame" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="5ls-Pi-2Yf"/>
-                        <viewControllerLayoutGuide type="bottom" id="mrj-bT-uAc"/>
+                        <viewControllerLayoutGuide type="top" id="hPH-zd-vCp"/>
+                        <viewControllerLayoutGuide type="bottom" id="fol-76-gA5"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="ac1-Ys-3j9">
+                    <view key="view" contentMode="scaleToFill" id="Ic2-Qk-Wka">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RTh-v4-VFK">
-                                <rect key="frame" x="74" y="192" width="227" height="96"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wmM-Wx-ByP">
+                                <rect key="frame" x="16" y="28" width="54" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <state key="normal" title="⬅︎">
+                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="goToMenu:" destination="XSt-I6-pjY" eventType="touchUpInside" id="6cn-eC-U2U"/>
+                                    <segue destination="XaB-X6-LB3" kind="show" id="Too-4b-N1W"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Winner" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="6" baselineAdjustment="alignBaselines" minimumFontSize="12" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UwK-4E-bgd">
+                                <rect key="frame" x="78" y="192" width="218" height="51"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <keyCommands/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
-                        <outlet property="winnerMessageLabel" destination="RTh-v4-VFK" id="FAG-Wz-dpZ"/>
+                        <outlet property="winnerLabel" destination="UwK-4E-bgd" id="WOs-c3-VQD"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="NZk-1H-D5C" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JvX-J3-o5f" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="678.5" y="362.5"/>
+            <point key="canvasLocation" x="580.5" y="362.5"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="OGK-Br-XqU">
@@ -544,20 +559,14 @@
                                 <rect key="frame" x="125" y="285" width="124" height="42"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                 <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Topscores">
+                                <state key="normal" title="Highcores">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="topScoreButton:" destination="XaB-X6-LB3" eventType="touchUpInside" id="GhQ-n9-LPP"/>
+                                    <action selector="viewHighScores:" destination="XaB-X6-LB3" eventType="touchUpInside" id="51R-fe-8gI"/>
                                     <segue destination="sLy-DI-HDh" kind="show" id="Rdp-nK-r8x"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OqH-dV-0vy">
-                                <rect key="frame" x="190" y="0.0" width="48" height="25"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="khD-HJ-2ZO">
                                 <rect key="frame" x="99" y="122" width="177" height="54"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="25"/>
@@ -578,15 +587,8 @@
                                 </state>
                                 <connections>
                                     <action selector="newGameButton:" destination="XaB-X6-LB3" eventType="touchUpInside" id="3PO-xf-TjZ"/>
-                                    <segue destination="ody-xS-kz0" kind="show" id="gBa-wY-i7k"/>
+                                    <segue destination="ody-xS-kz0" kind="show" id="6Y1-lJ-9Wz"/>
                                 </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n1j-a3-8l3">
-                                <rect key="frame" x="16" y="20" width="41" height="40"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
-                                <state key="normal" title="⇐">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
                             </button>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="8BB-iS-zho">
                                 <rect key="frame" x="116" y="412" width="160" height="29"/>
@@ -601,12 +603,6 @@
                             </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="OqH-dV-0vy"/>
-                                <exclude reference="n1j-a3-8l3"/>
-                            </mask>
-                        </variation>
                     </view>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
@@ -619,10 +615,10 @@
             </objects>
             <point key="canvasLocation" x="-1033.5" y="362.5"/>
         </scene>
-        <!--High Scores View View Controller-->
+        <!--High Scores View Controller-->
         <scene sceneID="YJg-Wy-shI">
             <objects>
-                <viewController storyboardIdentifier="highscoreScene" id="sLy-DI-HDh" customClass="HighScoresViewViewController" customModule="wordGame" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="highscoreScene" id="sLy-DI-HDh" customClass="HighScoresViewController" customModule="wordGame" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="PYI-5t-hOM"/>
                         <viewControllerLayoutGuide type="bottom" id="FPl-sD-JAy"/>
@@ -635,6 +631,10 @@
                                 <rect key="frame" x="0.0" y="89" width="375" height="578"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="sLy-DI-HDh" id="vHB-Ny-MXe"/>
+                                    <outlet property="delegate" destination="sLy-DI-HDh" id="P3m-RG-ARR"/>
+                                </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YmT-YN-kcc">
                                 <rect key="frame" x="16" y="28" width="54" height="34"/>
@@ -643,6 +643,7 @@
                                     <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
+                                    <action selector="backToMenu:" destination="sLy-DI-HDh" eventType="touchUpInside" id="dQ0-d4-vtS"/>
                                     <segue destination="XaB-X6-LB3" kind="show" id="5sA-Rs-ED1"/>
                                 </connections>
                             </button>
@@ -667,7 +668,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="6yz-xl-a8Q"/>
-        <segue reference="U1J-kK-NQR"/>
+        <segue reference="Too-4b-N1W"/>
+        <segue reference="fza-cl-jsh"/>
     </inferredMetricsTieBreakers>
 </document>
